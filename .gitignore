@@ -60,5 +60,6 @@ typings/
 # next.js build output
 .next
 
-# Discord.js credentials.json file
+# Discord.js config files
 credentials.json
+config.json
