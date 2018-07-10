@@ -1,0 +1,28 @@
+{
+  "name": "pinbot",
+  "version": "1.0.0",
+  "description": "Pinbot, the democratically controlled bot.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/VileBrigandier/pinbot.git"
+  },
+  "keywords": [
+    "pinbot",
+    "discord.js",
+    "discord",
+    "bot"
+  ],
+  "author": "Jake Skipper",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/VileBrigandier/pinbot/issues"
+  },
+  "homepage": "https://github.com/VileBrigandier/pinbot#readme",
+  "dependencies": {
+    "discord.js": "^11.3.2"
+  }
+}
