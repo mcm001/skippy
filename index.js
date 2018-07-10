@@ -19,8 +19,10 @@ client.on("ready", () => {
     // Example of changing the bot's playing game to something useful. `client.user` is what the
     // docs refer to as the "ClientUser".
     client.user.setActivity(`Serving ${client.guilds.size} servers`);
-    client.guilds.get(config.homeserver).fetchAuditLogs()
-        .then(audit => console.log(audit.entries.first()))
+    if (config.homeserver) {
+        client.guilds.get(config.homeserver).fetchAuditLogs()
+            .then(audit => console.log(audit.entries.first()));
+    }
 });
 
 client.on('message', async message => {
@@ -35,10 +37,10 @@ client.on('message', async message => {
     // args = ["Is", "this", "the", "real", "life?"]
     const args = message.content.slice(config.prefix.length).trim().split(/ +/g);
     const command = args.shift().toLowerCase();
-    
+
     if (command === "prune") {
-        if(!message.member.roles.some(r=>["admin", "Moderator"].includes(r.name)) )
-        return message.reply("Sorry, you don't have permissions to use this!");       
+        if (!message.member.roles.some(r => ["admin", "Moderator"].includes(r.name)))
+            return message.reply("Sorry, you don't have permissions to use this!");
 
         // This command removes all messages from all users in the channel, up to 100.
         // get the delete count, as an actual number.
@@ -47,7 +49,9 @@ client.on('message', async message => {
         // Ooooh nice, combined conditions. <3
         if (!deleteCount || deleteCount < 2 || deleteCount > 100)
             return message.reply("Please provide a number between 2 and 100 for the number of messages to delete");
-        client.channels.get(config.logchannel).send(`${message.author.tag} has used the prune command to delete ${deleteCount} messages.`)
+        if (config.logchannel) {
+            client.channels.get(config.logchannel).send(`${message.author.tag} has used the prune command to delete ${deleteCount} messages.`);
+        }
 
         // So we get our messages, and delete them. Simple enough, right?
         const fetched = await message.channel.fetchMessages({ limit: deleteCount });
@@ -66,7 +70,7 @@ client.on('message', async message => {
 client.on("messageDelete", async messageDelete => {
     console.log(messageDelete);
     console.log(`#${messageDelete.channel.name} | ${messageDelete.member.displayName}: ${messageDelete.content} (deleted)`);
-    client.channels.get('463208192013369354').send(`The message : "${messageDelete.content}" by ${messageDelete.author.tag} was deleted by`)
+    client.channels.get('463208192013369354').send(`The message : "#${messageDelete.channel.name}:${messageDelete.content}" by ${messageDelete.author.tag} was deleted.`)
 });
 
 client.on("messageDeleteBulk", bd => {
