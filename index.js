@@ -19,7 +19,7 @@ client.on("ready", () => {
     // Example of changing the bot's playing game to something useful. `client.user` is what the
     // docs refer to as the "ClientUser".
     client.user.setActivity(`Serving ${client.guilds.size} servers`);
-    client.guilds.get('448951856660480030').fetchAuditLogs()
+    client.guilds.get(config.homeserver).fetchAuditLogs()
         .then(audit => console.log(audit.entries.first()))
 });
 
@@ -47,7 +47,7 @@ client.on('message', async message => {
         // Ooooh nice, combined conditions. <3
         if (!deleteCount || deleteCount < 2 || deleteCount > 100)
             return message.reply("Please provide a number between 2 and 100 for the number of messages to delete");
-        client.channels.get('463208192013369354').send(`${message.author.tag} has used the prune command to delete ${deleteCount} messages.`)
+        client.channels.get(config.logchannel).send(`${message.author.tag} has used the prune command to delete ${deleteCount} messages.`)
 
         // So we get our messages, and delete them. Simple enough, right?
         const fetched = await message.channel.fetchMessages({ limit: deleteCount });
