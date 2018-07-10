@@ -14,9 +14,11 @@ client.on('ready', () => {
 client.on('messageReactionAdd', (messageReaction, user) => {
     if (messageReaction.emoji.name == '📌') {
         if (messageReaction.count >= 3) {
-            messageReaction.message.pin()
-            .then(console.log(`${messageReaction.message.id} pinned!`))
-            .catch(console.error);
+            if (messageReaction.message.pinned == false) {
+                messageReaction.message.pin()
+                .then(console.log(`Message ID ${messageReaction.message.id} pinned!`))
+                .catch(console.error);
+            }
         } else {
             console.log(`Message ID ${messageReaction.message.id} pushpin reaction count at ${messageReaction.count}. 3 needed for message to be pinned.`)
         }
