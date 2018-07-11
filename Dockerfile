@@ -16,20 +16,17 @@ RUN \
 	#nano \
 	#wget \
 	curl \
+	gnupg \
 	#unzip \
 	#htop \
 	tzdata && \
-
 	# install node
     curl -sL https://deb.nodesource.com/setup_8.x |bash -  && \
     apt-get install -y nodejs && \
-
     # install s6-overlay
     curl -s -o - -L "https://github.com/just-containers/s6-overlay/releases/download/v1.20.0.0/s6-overlay-amd64.tar.gz" | tar xzf - -C / && \
-    
 	# make folders
 	mkdir -p /app /config && \
-
 	# cleanup
 	apt-get autoremove -y && \
 	apt-get clean && \
