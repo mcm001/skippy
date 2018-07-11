@@ -1,8 +1,14 @@
 // Load in system libraries
 const fs = require('fs');
 
+// set config folder  for docker environment
+if (process.env.DOCKER === 'YES')
+    process.env.CONFIGFOLDER = "/config/";
+else
+    process.env.CONFIGFOLDER = "./";
+
 // Here we load the config.json file that contains our token and our prefix values. 
-const config = require("./config.json");
+const config = require(process.env.CONFIGFOLDER + "config.json");
 // config.token contains the bot's token
 // config.prefix contains the message prefix.
 
