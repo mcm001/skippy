@@ -42,42 +42,56 @@ client.on('message', async message => {
         if (!message.member.roles.some(r => ["admin", "Moderator"].includes(r.name)))
             return message.reply("Sorry, you don't have permissions to use this!");
 
-        // This command removes all messages from all users in the channel, up to 100.
-        // get the delete count, as an actual number.
-        const deleteCount = parseInt(args[0], 10);
+        const user = message.mentions.users.first();
+        const amount = !!parseInt(message.content.split(' ')[1]) ? parseInt(message.content.split(' ')[1]) : parseInt(message.content.split(' ')[2])
 
-        // Ooooh nice, combined conditions. <3
-        if (!deleteCount || deleteCount < 2 || deleteCount > 100)
-            return message.reply("Please provide a number between 2 and 100 for the number of messages to delete");
+        console.log(`User: ${user} | amount: ${amount}`)
+
+        if (!amount) return message.reply('You didn\'t give me enough info! ```!purge [@user] <count>```');
+        if (!amount && !user) return message.reply('You didn\'t give me enough info! ```!purge [@user] <count>```');
+
         if (config.logchannel) {
-            client.channels.get(config.logchannel).send(`${message.author.tag} has used the prune command to delete ${deleteCount} messages.`);
+            client.channels.get(config.logchannel).send(`${message.author.tag} has used the prune command to delete ${amount} messages.`);
         }
 
-        // So we get our messages, and delete them. Simple enough, right?
-        const fetched = await message.channel.fetchMessages({ limit: deleteCount });
-        message.channel.bulkDelete(fetched)
-            .catch(error => message.reply(`Couldn't delete messages because of: ${error}`));
+        message.channel.fetchMessages({
+            limit: !user ? amount : 100,
+        }).then((messages) => {
+            if (user) {
+                const filterBy = user ? user.id : Client.user.id;
+                messages = messages.filter(m => m.author.id === filterBy).array().slice(0, amount);
+            }
+            message.channel.bulkDelete(messages).catch(error => console.log(error.stack));
+        });
     }
 })
 /* client.on('messageUpdate', async message => {
     console.log('#' + message.channel.name
-        + '|' + message.member.displayName + ': '
+        + '|' + message.member.displayName + ': 'als
         + message.content + ' (updated)'
         + '\n' + message.edits
     );
 }) */
 
 client.on("messageDelete", async messageDelete => {
-    console.log(messageDelete);
-    console.log(`#${messageDelete.channel.name} | ${messageDelete.member.displayName}: ${messageDelete.content} (deleted)`);
-    client.channels.get('463208192013369354').send(`The message : "#${messageDelete.channel.name}:${messageDelete.content}" by ${messageDelete.author.tag} was deleted.`)
-});
+    const thisserver = messageDelete.guild.id
+    console.log(`Deleted from server: ${thisserver}`)
+    client.guilds.get(thisserver).fetchAuditLogs()
+        .then(audit => {
+            console.log(messageDelete);
+            console.log(`#${messageDelete.channel.name} | ${messageDelete.member.displayName}: ${messageDelete.content} (deleted)`);
+            if (config.logchannel) {
+                client.channels.get(config.logchannel).send(`The message : "#${messageDelete.channel.name}:${messageDelete.content}" by ${messageDelete.author.tag} was deleted by ${audit.entries.first().executor.username}`)
+            }
+        });
+})
 
 client.on("messageDeleteBulk", bd => {
     for (var [s, m] of bd) {
-        console.log(JSON.stringify(bd, undefined, 2));
         console.log('#' + m.channel.name + '|' + m.member.displayName + ': ' + m.content + ' (deleted)');
-        client.channels.get('463208192013369354').send(`The message : "${m.content}" by ${m.author.tag} was deleted.`)
+        if (config.logchannel) {
+            client.channels.get(config.logchannel).send(`The message : "${m.channel.name}:${m.content}" by ${m.author.tag} was deleted.`)
+        }
     }
 });
 
