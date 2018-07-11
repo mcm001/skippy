@@ -63,3 +63,6 @@ typings/
 # Discord.js config files
 credentials.json
 config.json
+
+# VSCode Files
+.vscode/
