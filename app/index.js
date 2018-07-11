@@ -31,7 +31,7 @@ client.on("ready", () => {
     }
 });
 
-client.on('message', async message => {
+/* client.on('message', async message => {
     console.log('#' + message.channel.name + '|' + message.member.displayName + ': ' + message.content);
     // Also good practice to ignore any message that does not start with our prefix, 
     // which is set in the configuration file.
@@ -70,7 +70,8 @@ client.on('message', async message => {
             message.channel.bulkDelete(messages).catch(error => console.log(error.stack));
         });
     }
-})
+}) */
+
 /* client.on('messageUpdate', async message => {
     console.log('#' + message.channel.name
         + '|' + message.member.displayName + ': 'als
@@ -79,6 +80,7 @@ client.on('message', async message => {
     );
 }) */
 
+/* 
 client.on("messageDelete", async messageDelete => {
     const thisserver = messageDelete.guild.id
     console.log(`Deleted from server: ${thisserver}`)
@@ -101,6 +103,7 @@ client.on("messageDeleteBulk", bd => {
         }
     }
 });
+*/
 
 // Watch for reactions and do things with them
 client.on('messageReactionAdd', (messageReaction, user) => {
