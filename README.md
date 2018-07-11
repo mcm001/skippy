@@ -6,7 +6,9 @@ Pinbot can be configured by creating a `credentials.json` file in the root of th
 
 ```
 {
-    "token": "YOUR_BOT_TOKEN_HERE"
+    "token": "YOUR_BOT_TOKEN_HERE",
+    "prefix": "!",
+    "logchannel": "ID_FOR_LOG_CHANNEL"
 }
 ```
 
