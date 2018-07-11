@@ -87,7 +87,8 @@ client.on("messageDelete", async messageDelete => {
             console.log(messageDelete);
             console.log(`#${messageDelete.channel.name} | ${messageDelete.member.displayName}: ${messageDelete.content} (deleted)`);
             if (config.logchannel) {
-                client.channels.get(config.logchannel).send(`The message : "#${messageDelete.channel.name}:${messageDelete.content}" by ${messageDelete.author.tag} was deleted by ${audit.entries.first().executor.username}`)
+                //client.channels.get(config.logchannel).send(`The message : "#${messageDelete.channel.name}:${messageDelete.content}" by ${messageDelete.author.tag} was deleted by ${audit.entries.first().executor.username}`)
+                client.channels.get(config.logchannel).send(`The message : "#${messageDelete.channel.name}:${messageDelete.content}" by ${messageDelete.author.tag} was deleted.`)
             }
         });
 })
@@ -102,7 +103,7 @@ client.on("messageDeleteBulk", bd => {
 });
 
 // Watch for reactions and do things with them
-/* client.on('messageReactionAdd', (messageReaction, user) => {
+client.on('messageReactionAdd', (messageReaction, user) => {
     if (messageReaction.emoji.name == '📌') {
         if (messageReaction.count >= 3) {
             if (messageReaction.message.pinned == false) {
@@ -114,7 +115,7 @@ client.on("messageDeleteBulk", bd => {
             console.log(`Message ID ${messageReaction.message.id} pushpin reaction count at ${messageReaction.count}. 3 needed for message to be pinned.`)
         }
     }
-}); */
+});
 
 // Start the bot
 client.login(config.token);
