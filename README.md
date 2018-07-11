@@ -2,7 +2,7 @@
 Discord.js bot for pinning and other actions controlled primarily by end users through reactions.
 
 ## Configuration
-Pinbot can be configured by creating a `credentials.json` file in the root of the bot directory with the following contents:
+Pinbot can be configured by creating a `config.json` file in the root of the bot directory with the following contents:
 
 ```
 {
