@@ -6,8 +6,7 @@ ENV LANG='C.UTF-8' LANGUAGE='C.UTF-8' LC_ALL='C.UTF-8'
 ENV TERM="xterm"
 ENV DOCKER="YES"
 
-RUN \
-	apt-get update && \
+RUN apt-get update && \
     apt-get upgrade -y && \
     apt-get install -y --no-install-recommends --no-install-suggests \
     apt-utils \
@@ -36,8 +35,7 @@ RUN \
 	/var/tmp/* 			
 
 # create user 
-RUN \ 
-    useradd -u 1000 -U -d /config -s /bin/false abc && \
+RUN useradd -u 1000 -U -d /config -s /bin/false abc && \
     usermod -G users abc
 
 # Copy App to App Folder
@@ -47,7 +45,6 @@ COPY app/ /app/
 RUN cd /app/ && \
     npm install
     
-
 # Copy etc files
 # COPY root/ /
 
